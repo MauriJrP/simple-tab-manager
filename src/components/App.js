@@ -10,6 +10,7 @@ function App() {
 	let [openTabs, setOpenTabs] = useState([]);
 
 	chrome.storage.local.get('openTabs', ({ openTabs }) => setOpenTabs(openTabs));
+	// console.log(openTabs);
 
 	return (
 		<div className="container">
