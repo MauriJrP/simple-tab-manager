@@ -14,3 +14,7 @@
 	/* border-bottom: 0.1em solid rgb(232, 229, 222); */
 	/* display: inline-block; */
 }
+
+.header__div-add {
+	max-height: 20px;
+}

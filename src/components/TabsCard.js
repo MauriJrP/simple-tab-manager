@@ -5,12 +5,15 @@ import Tab from './Tab';
 
 import { useState } from 'react';
 
-function TabsCard({ openTabs }) {
+function TabsCard({ tabGroup }) {
 	let [minimized, setMinimized] = useState();
 
 	const minimizeGroup = (element) => {
 		setMinimized(!minimized);
-		chrome.storage.local.set({ minimized: !minimized });
+
+		// chrome.storage.local.set({ minimized: !minimized });
+		// chrome.storage.local.get('test', (test) => console.log(test));
+		// chrome.storage.local.get('openTabs', (openTabs) => console.log(openTabs));
 	};
 
 	return (
@@ -32,10 +35,9 @@ function TabsCard({ openTabs }) {
 				className={
 					'tabs-card__ul ' + (minimized ? 'tabs-card__ul-minimize' : '')
 				}
-				id="tabs-card"
 			>
-				{openTabs.map((openTab) => (
-					<Tab openTab={openTab} />
+				{tabGroup.tabs.map((tab) => (
+					<Tab tab={tab} />
 				))}
 			</ul>
 		</div>
