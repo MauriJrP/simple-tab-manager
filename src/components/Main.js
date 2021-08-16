@@ -1,14 +1,10 @@
 import './styles/Main.css';
-import OpenTabsCard from './OpenTabsCard';
 import TabsCard from './TabsCard';
 
-function Main({ openTabs, tabGroups }) {
+function Main({ openTabs }) {
 	return (
 		<main className="main">
-			<OpenTabsCard openTabs={openTabs} />
-			{/* {tabGroups.map((tabGroup) => {
-				<TabsCard tabGroup={tabGroup} />;
-			})} */}
+			<TabsCard openTabs={openTabs} />
 		</main>
 	);
 }

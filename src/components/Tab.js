@@ -2,28 +2,28 @@
 
 import './styles/Tab.css';
 
-function Tab({ tab }) {
-	const removeTab = async () => await chrome.tabs.remove(tab.tabId);
+function Tab({ openTab }) {
+	const removeTab = async () => await chrome.tabs.remove(openTab.tabId);
 
 	return (
-		<li className="tabs-card__li tab" title={tab.title}>
-			<a href={tab.url} target="_blank" className="tab__a">
+		<li className="tabs-card__li tab" title={openTab.title}>
+			<a href={openTab.url} target="_blank" className="tab__a">
 				<div className="tabs-card__img-container img-container tab__img-container-fav-icon">
 					<img
 						src={
-							tab.favIconUrl != '' && tab.favIconUrl !== undefined
-								? tab.favIconUrl
+							openTab.favIconUrl != '' && openTab.favIconUrl !== undefined
+								? openTab.favIconUrl
 								: 'https://image.flaticon.com/icons/png/512/1179/1179237.png'
 						}
 						alt=""
 						className="tabs-card__img "
 					/>
 				</div>
-				{tab.title.substring(0, 20)}
+				{openTab.title.substring(0, 20)}
 			</a>
 			<div
 				className="tabs-card__img-container img-container tab__img-container-close-icon"
-				id={tab.tabId}
+				id={openTab.tabId}
 				onClick={removeTab}
 			>
 				<img

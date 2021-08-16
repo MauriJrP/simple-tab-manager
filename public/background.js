@@ -9,14 +9,38 @@ const getTabInfo = (tab) => {
 	};
 };
 
-const loadTabGroups = async () => {
-	tabGroups = [];
-	chrome.storage.local.set({ tabGroups: tabGroups }, console.log(tabGroups));
-	loadTabs();
-};
+// [
+// 	{
+// 		pinned: false,
+// 		color: 'basic',
+// 		nameGroup: '',
+// 		tabs: [],
+// 	},
+// 	{
+// 		pinned: false,
+// 		color: 'red',
+// 		nameGroup: '',
+// 		tabs: [],
+// 	},
+// ];
+
+class TabGroup {
+	constructor(
+		pinned = false,
+		color = 'basic',
+		nameGroup = 'New Group',
+		tabs = []
+	) {
+		this.pinned = pinned;
+		this.color = color;
+		this.nameGroup = nameGroup;
+		this.tabs = tabs;
+	}
+}
 
 const loadTabs = async () => {
 	const tabs = await getAllInWindow();
+	console.log(tabs);
 	let openTabs = tabs.map((tab) => getTabInfo(tab));
 	chrome.storage.local.set({ openTabs: openTabs });
 	chrome.storage.local.set({ minimized: false });
@@ -59,7 +83,7 @@ async function getCurrentTab() {
 	return tab;
 }
 
-chrome.runtime.onInstalled.addListener(loadTabGroups);
+chrome.runtime.onInstalled.addListener(loadTabs);
 chrome.runtime.onStartup.addListener(loadTabs);
 chrome.tabs.onCreated.addListener(tabAdded);
 chrome.tabs.onUpdated.addListener(tabUpdated);
