@@ -18,6 +18,41 @@
 	font-weight: bold;
 }
 
+.tabs-card__color-palette {
+	position: relative;
+}
+
+.color-palette {
+	height: 30px;
+	width: 99px;
+	background: #eee;
+	position: absolute;
+	top: 24px;
+	left: -55px;
+	border-radius: 5px;
+	border: 1px solid #db40e5;
+	display: grid;
+	grid-template-columns: repeat(3, 33px);
+	align-items: center;
+	justify-items: center;
+}
+
+.color-palette__div {
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+}
+
+.color-palette__basic {
+	background: var(--header-color-basic);
+}
+.color-palette__pink {
+	background: var(--header-color-pink);
+}
+.color-palette__yellow {
+	background: var(--header-color-yellow);
+}
+
 .tabs-card__ul {
 	padding-left: 5px;
 	padding-right: 5px;
@@ -42,6 +77,7 @@
 
 /* -------- ------- ------ ----- colors palette ----- ------ ------- -------- */
 
+/* -------- ------- ------ ----- basic ----- ------ ------- -------- */
 .tabs-card-basic {
 	background: var(--tabs-card-color-basic);
 	box-shadow: var(--shadow-basic);
@@ -55,6 +91,24 @@
 .tab-basic {
 	background-color: var(--tab-color-basic);
 }
+
+/* -------- ------- ------ ----- pink ----- ------ ------- -------- */
+
+.tabs-card-pink {
+	background: var(--tabs-card-color-pink);
+	box-shadow: var(--shadow-pink);
+}
+.tabs-card__header-pink {
+	background: var(--header-color-pink);
+}
+.text-pink {
+	color: var(--text-color-pink);
+}
+.tab-pink {
+	background-color: var(--tab-color-pink);
+}
+
+/* -------- ------- ------ ----- yellow ----- ------ ------- -------- */
 
 .tabs-card-yellow {
 	background: var(--tabs-card-color-yellow);
