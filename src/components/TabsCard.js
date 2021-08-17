@@ -29,8 +29,6 @@ function TabsCard({ openTabs }) {
 			openTabs.color = color;
 			chrome.storage.local.set({ openTabs: openTabs });
 		});
-		// console.log(color);
-		// console.log
 	};
 
 	return (
@@ -62,7 +60,9 @@ function TabsCard({ openTabs }) {
 				id="tabs-card"
 			>
 				{openTabs.tabs &&
-					openTabs.tabs.map((tab) => <Tab tab={tab} color={openTabs.color} />)}
+					openTabs.tabs.map((tab) => (
+						<Tab tab={tab} color={openTabs.color} openTab={true} />
+					))}
 			</ul>
 		</div>
 	);
