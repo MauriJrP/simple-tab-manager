@@ -17,6 +17,7 @@
 	padding: 2px 4px;
 	display: flex;
 	align-items: center;
+	cursor: pointer;
 }
 
 .tab__img-container-fav-icon {

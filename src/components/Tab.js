@@ -5,6 +5,9 @@ import './styles/Tab.css';
 function Tab({ tab, color, openTab }) {
 	const removeTab = async () => await chrome.tabs.remove(tab.tabId);
 
+	const moveToTab = async () =>
+		await chrome.tabs.update(tab.tabId, { selected: true });
+
 	const linkInfo = (
 		<div className="tabs-card__img-container img-container tab__img-container-fav-icon">
 			<img
@@ -20,15 +23,15 @@ function Tab({ tab, color, openTab }) {
 	);
 
 	const link = openTab ? (
+		<div className={'tab__a text-' + color} onClick={moveToTab}>
+			{linkInfo}
+			{tab.title.substring(0, 20)}
+		</div>
+	) : (
 		<a href={tab.url} target="_blank" className={'tab__a text-' + color}>
 			{linkInfo}
 			{tab.title.substring(0, 20)}
 		</a>
-	) : (
-		<div className={'tab__a text-' + color}>
-			{linkInfo}
-			{tab.title.substring(0, 20)}
-		</div>
 	);
 
 	return (
