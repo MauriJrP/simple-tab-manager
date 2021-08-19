@@ -2,14 +2,13 @@
 	max-width: 90%;
 	height: 75vh;
 	margin: 4vh auto 2vh;
-	/* background: #222; */
 	overflow-y: auto;
 	display: grid;
 	grid-template-columns: 48% 48%;
-	/* grid-template-columns: 99%; */
 	grid-auto-rows: max-content;
 	column-gap: 4%;
 	row-gap: 10px;
+	/* display: inline; */
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 .main::-webkit-scrollbar {

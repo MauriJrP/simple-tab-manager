@@ -11,11 +11,14 @@ function TabsCard({ tabGroup }) {
 	let [palette, setPalette] = useState(false);
 
 	const minimizeGroup = (/*element*/) => {
-		// setMinimized(!minimized);
-		// chrome.storage.local.get('storage', ({ storage }) => {
-		// 	storage.openTabs.minimized = !storage.openTabs.minimized;
-		// 	chrome.storage.local.set({ storage: storage });
-		// });
+		setMinimized(!minimized);
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.tabGroups = storage.tabGroups.map((group) => {
+				if (tabGroup.id === group.id) group.minimized = !group.minimized;
+				return group;
+			});
+			chrome.storage.local.set({ storage: storage });
+		});
 	};
 
 	const showPalette = () => {
@@ -24,17 +27,20 @@ function TabsCard({ tabGroup }) {
 	};
 
 	const setColorPalette = (element) => {
-		// const color = element.target.id;
-		// chrome.storage.local.get('storage', ({ storage }) => {
-		// 	storage.openTabs.color = color;
-		// 	chrome.storage.local.set({ storage: storage });
-		// });
+		const color = element.target.id;
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.tabGroups = storage.tabGroups.map((group) => {
+				if (tabGroup.id === group.id) group.color = color;
+				return group;
+			});
+			chrome.storage.local.set({ storage: storage });
+		});
 	};
 
 	const changeTitle = (el) => {
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabGroups = storage.tabGroups.map((group) => {
-				if (tabGroup.id == group.id) group.nameGroup = el.target.innerHTML;
+				if (tabGroup.id === group.id) group.nameGroup = el.target.innerHTML;
 				return group;
 			});
 			chrome.storage.local.set({ storage: storage });
