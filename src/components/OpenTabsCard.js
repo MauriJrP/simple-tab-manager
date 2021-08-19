@@ -7,7 +7,7 @@ import ChangeColor from './ChangeColor';
 import { useState } from 'react';
 
 function OpenTabsCard({ openTabs }) {
-	let [minimized, setMinimized] = useState(false);
+	let [minimized, setMinimized] = useState(openTabs.minimized);
 	let [palette, setPalette] = useState(false);
 
 	const minimizeGroup = (/*element*/) => {
@@ -31,8 +31,31 @@ function OpenTabsCard({ openTabs }) {
 		});
 	};
 
+	const dragging = (el) => el.preventDefault();
+
+	const drop = (el) => {
+		el.preventDefault();
+		chrome.storage.local.get('storage', ({ storage }) => {
+			const removePos = storage.tabGroups.findIndex(
+				(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId
+			);
+			storage.tabGroups[removePos].tabs = storage.tabGroups[
+				removePos
+			].tabs.filter(
+				(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
+			);
+			storage.tabTransfered.tabGroupId = openTabs.id;
+			storage.openTabs.tabs.push(storage.tabTransfered);
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
+
 	return (
-		<div className={'tabs-card tabs-card-' + openTabs.color}>
+		<div
+			className={'tabs-card tabs-card-' + openTabs.color}
+			onDragOver={dragging}
+			onDrop={drop}
+		>
 			<div className={'tabs-card__header tabs-card__header-' + openTabs.color}>
 				<h2 className={'tabs-card__title text-' + openTabs.color}>
 					{openTabs.nameGroup}
@@ -60,7 +83,12 @@ function OpenTabsCard({ openTabs }) {
 			>
 				{openTabs.tabs &&
 					openTabs.tabs.map((tab) => (
-						<Tab tab={tab} color={openTabs.color} openTab={true} />
+						<Tab
+							tab={tab}
+							color={openTabs.color}
+							openTab={true}
+							// id={tab.tabStorageId}
+						/>
 					))}
 			</ul>
 		</div>

@@ -7,7 +7,7 @@ import ChangeColor from './ChangeColor';
 import { useState } from 'react';
 
 function TabsCard({ tabGroup }) {
-	let [minimized, setMinimized] = useState(false);
+	let [minimized, setMinimized] = useState(tabGroup.minimized);
 	let [palette, setPalette] = useState(false);
 
 	const minimizeGroup = (/*element*/) => {
@@ -47,8 +47,43 @@ function TabsCard({ tabGroup }) {
 		});
 	};
 
+	const removeTab = async (id) => await chrome.tabs.remove(id);
+
+	const dragging = (el) => el.preventDefault();
+
+	const drop = (el) => {
+		el.preventDefault();
+		chrome.storage.local.get('storage', ({ storage }) => {
+			if (storage.tabTransfered.tabGroupId === 0) {
+				storage.openTabs.tabs = storage.openTabs.tabs.filter(
+					(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
+				);
+				removeTab(storage.tabTransfered.tabId);
+			} else {
+				const removePos = storage.tabGroups.findIndex(
+					(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId
+				);
+				storage.tabGroups[removePos].tabs = storage.tabGroups[
+					removePos
+				].tabs.filter(
+					(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
+				);
+			}
+			storage.tabTransfered.tabGroupId = tabGroup.id;
+			storage.tabGroups = storage.tabGroups.map((group) => {
+				if (tabGroup.id === group.id) group.tabs.push(storage.tabTransfered);
+				return group;
+			});
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
+
 	return (
-		<div className={'tabs-card tabs-card-' + tabGroup.color}>
+		<div
+			className={'tabs-card tabs-card-' + tabGroup.color}
+			onDragOver={dragging}
+			onDrop={drop}
+		>
 			<div className={'tabs-card__header tabs-card__header-' + tabGroup.color}>
 				<h2
 					className={'tabs-card__title text-' + tabGroup.color}
@@ -80,7 +115,12 @@ function TabsCard({ tabGroup }) {
 			>
 				{tabGroup.tabs &&
 					tabGroup.tabs.map((tab) => (
-						<Tab tab={tab} color={tabGroup.color} openTab={false} />
+						<Tab
+							tab={tab}
+							color={tabGroup.color}
+							openTab={false}
+							// id={tabStorageId}
+						/>
 					))}
 			</ul>
 		</div>

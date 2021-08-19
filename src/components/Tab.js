@@ -3,7 +3,19 @@
 import './styles/Tab.css';
 
 function Tab({ tab, color, openTab }) {
-	const removeTab = async () => await chrome.tabs.remove(tab.tabId);
+	const removeTab = async () => {
+		openTab === true
+			? await chrome.tabs.remove(tab.tabId)
+			: chrome.storage.local.get('storage', ({ storage }) => {
+					storage.tabGroups = storage.tabGroups.map((group) => {
+						group.tabs = group.tabs.filter(
+							(t) => t.tabStorageId !== tab.tabStorageId
+						);
+						return group;
+					});
+					chrome.storage.local.set({ storage: storage });
+			  });
+	};
 
 	const moveToTab = async () =>
 		await chrome.tabs.update(tab.tabId, { selected: true });
@@ -34,12 +46,26 @@ function Tab({ tab, color, openTab }) {
 		</a>
 	);
 
+	const dragElement = (el) => {
+		console.log(el);
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.tabTransfered = tab;
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
+
 	return (
-		<li className={'tabs-card__li tab tab-' + color} title={tab.title}>
+		<li
+			className={'tabs-card__li tab tab-' + color}
+			title={tab.title}
+			draggable="true"
+			id={tab.tabStorageId}
+			onDragStart={dragElement}
+		>
 			{link}
 			<div
 				className="tabs-card__img-container img-container tab__img-container-close-icon"
-				id={tab.tabId}
+				id={tab.tabId} // id on browser
 				onClick={removeTab}
 			>
 				<img

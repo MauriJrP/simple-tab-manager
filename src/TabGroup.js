@@ -1,6 +1,6 @@
 class TabGroup {
 	constructor(
-		id = -1,
+		id = 0,
 		pinned = false,
 		minimized = false,
 		color = 'basic',
@@ -15,8 +15,10 @@ class TabGroup {
 		this.tabs = tabs;
 	}
 
-	getTabInfo = (tab) => {
+	getTabInfo = (tab, id, groupId = 0) => {
 		return {
+			tabStorageId: id,
+			tabGroupId: groupId,
 			tabId: tab.id,
 			title: tab.title,
 			url: tab.url,

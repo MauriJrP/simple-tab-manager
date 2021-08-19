@@ -2,7 +2,7 @@
 
 class TabGroup {
 	constructor(
-		id = -1,
+		id = 0,
 		pinned = false,
 		minimized = false,
 		color = 'basic',
@@ -17,8 +17,10 @@ class TabGroup {
 		this.tabs = tabs;
 	}
 
-	getTabInfo = (tab) => {
+	getTabInfo = (tab, id, groupId = 0) => {
 		return {
+			tabStorageId: id,
+			tabGroupId: groupId,
 			tabId: tab.id,
 			title: tab.title,
 			url: tab.url,
@@ -31,8 +33,10 @@ class TabGroup {
 	};
 }
 
-const getTabInfo = (tab) => {
+const getTabInfo = (tab, id, groupId = 0) => {
 	return {
+		tabStorageId: id,
+		tabGroupId: groupId,
 		tabId: tab.id,
 		title: tab.title,
 		url: tab.url,
@@ -44,6 +48,8 @@ const loadTabGroups = async () => {
 	let storage = {
 		tabGroups: [],
 		tabGroupsCont: 0,
+		tabsCont: 0,
+		tabTransfered: undefined,
 	};
 	chrome.storage.local.set({ storage: storage });
 	await loadTabs();
@@ -56,7 +62,7 @@ const loadTabs = async () => {
 		let openTabs = new TabGroup();
 		openTabs.nameGroup = 'Open Tabs';
 		tabs.map((tab) => {
-			openTabs.pushTab(openTabs.getTabInfo(tab));
+			openTabs.pushTab(openTabs.getTabInfo(tab, ++storage.tabsCont));
 		});
 		storage.openTabs = openTabs;
 		chrome.storage.local.set({ storage: storage });
@@ -65,7 +71,7 @@ const loadTabs = async () => {
 
 const tabAdded = async (tab) => {
 	chrome.storage.local.get('storage', ({ storage }) => {
-		const newTab = getTabInfo(tab);
+		const newTab = getTabInfo(tab, ++storage.tabsCont);
 		storage.openTabs.tabs.push(newTab);
 		chrome.storage.local.set({ storage: storage });
 	});

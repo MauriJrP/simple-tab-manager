@@ -7,7 +7,7 @@ function Header() {
 	const addNewTabGroup = () => {
 		chrome.storage.local.get('storage', ({ storage }) => {
 			let newTabGroup = new TabGroup(++storage.tabGroupsCont);
-			newTabGroup.nameGroup = 'prueba';
+			newTabGroup.nameGroup = 'New Tab Group';
 			storage.tabGroups.push(newTabGroup);
 			chrome.storage.local.set({ storage: storage });
 		});
@@ -16,7 +16,7 @@ function Header() {
 	return (
 		<>
 			<header className="header">
-				<h1 className="header__h1">Tab Cleaner</h1>
+				<h1 className="header__h1">Tab Manager</h1>
 				<div className="header__div-add img-container">
 					<img
 						src={process.env.PUBLIC_URL + '/icons/add.png'}
