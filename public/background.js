@@ -2,12 +2,14 @@
 
 class TabGroup {
 	constructor(
+		id = -1,
 		pinned = false,
 		minimized = false,
 		color = 'basic',
 		nameGroup = 'New Group',
 		tabs = []
 	) {
+		this.id = id;
 		this.pinned = pinned;
 		this.minimized = minimized;
 		this.color = color;
@@ -39,43 +41,54 @@ const getTabInfo = (tab) => {
 };
 
 const loadTabGroups = async () => {
-	tabGroups = [];
-	chrome.storage.local.set({ tabGroups: tabGroups });
+	let storage = {
+		tabGroups: [],
+		tabGroupsCont: 0,
+	};
+	chrome.storage.local.set({ storage: storage });
 	await loadTabs();
 };
 
 const loadTabs = async () => {
 	const tabs = await getAllInWindow();
-	let openTabs = new TabGroup();
-	openTabs.nameGroup = 'Open Tabs';
-	tabs.map((tab) => {
-		openTabs.pushTab(openTabs.getTabInfo(tab));
+
+	chrome.storage.local.get('storage', ({ storage }) => {
+		let openTabs = new TabGroup();
+		openTabs.nameGroup = 'Open Tabs';
+		tabs.map((tab) => {
+			openTabs.pushTab(openTabs.getTabInfo(tab));
+		});
+		storage.openTabs = openTabs;
+		chrome.storage.local.set({ storage: storage });
 	});
-	chrome.storage.local.set({ openTabs: openTabs });
 };
 
 const tabAdded = async (tab) => {
-	chrome.storage.local.get('openTabs', ({ openTabs }) => {
+	chrome.storage.local.get('storage', ({ storage }) => {
 		const newTab = getTabInfo(tab);
-		openTabs.tabs.push(newTab);
-		chrome.storage.local.set({ openTabs: openTabs });
+		storage.openTabs.tabs.push(newTab);
+		chrome.storage.local.set({ storage: storage });
 	});
 };
 
 const tabUpdated = async (tabId, changeInfo, tab) => {
 	if (tab.status === 'complete') {
-		chrome.storage.local.get('openTabs', ({ openTabs }) => {
-			const pos = openTabs.tabs.findIndex((openTab) => openTab.tabId === tabId);
-			openTabs.tabs[pos] = getTabInfo(tab);
-			chrome.storage.local.set({ openTabs: openTabs });
+		chrome.storage.local.get('storage', ({ storage }) => {
+			const pos = storage.openTabs.tabs.findIndex(
+				(openTab) => openTab.tabId === tabId
+			);
+			storage.openTabs.tabs[pos] = getTabInfo(tab);
+			chrome.storage.local.set({ storage: storage });
 		});
 	}
 };
 
 const tabRemoved = async (tabId, removeInfo) => {
-	chrome.storage.local.get('openTabs', ({ openTabs }) => {
-		openTabs.tabs = openTabs.tabs.filter((openTab) => openTab.tabId !== tabId);
-		chrome.storage.local.set({ openTabs: openTabs });
+	chrome.storage.local.get('storage', ({ storage }) => {
+		storage.openTabs.tabs = storage.openTabs.tabs.filter(
+			(openTab) => openTab.tabId !== tabId
+		);
+		chrome.storage.local.set({ storage: storage });
 	});
 };
 

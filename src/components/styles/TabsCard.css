@@ -1,6 +1,7 @@
 .tabs-card {
 	border-radius: 8px;
 	margin: 0 8px 5px 0;
+	height: fit-content;
 }
 
 .tabs-card__header {

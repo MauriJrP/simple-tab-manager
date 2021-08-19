@@ -1,13 +1,15 @@
 class TabGroup {
 	constructor(
+		id = -1,
 		pinned = false,
-    minimized = false,
+		minimized = false,
 		color = 'basic',
 		nameGroup = 'New Group',
 		tabs = []
 	) {
+		this.id = id;
 		this.pinned = pinned;
-    this.minimized = minimized;
+		this.minimized = minimized;
 		this.color = color;
 		this.nameGroup = nameGroup;
 		this.tabs = tabs;

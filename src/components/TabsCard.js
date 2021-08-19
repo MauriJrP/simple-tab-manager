@@ -6,16 +6,16 @@ import ChangeColor from './ChangeColor';
 
 import { useState } from 'react';
 
-function TabsCard({ openTabs }) {
+function TabsCard({ tabGroup }) {
 	let [minimized, setMinimized] = useState(false);
 	let [palette, setPalette] = useState(false);
 
 	const minimizeGroup = (/*element*/) => {
-		setMinimized(!minimized);
-		chrome.storage.local.get('openTabs', ({ openTabs }) => {
-			openTabs.minimized = !openTabs.minimized;
-			chrome.storage.local.set({ openTabs: openTabs });
-		});
+		// setMinimized(!minimized);
+		// chrome.storage.local.get('storage', ({ storage }) => {
+		// 	storage.openTabs.minimized = !storage.openTabs.minimized;
+		// 	chrome.storage.local.set({ storage: storage });
+		// });
 	};
 
 	const showPalette = () => {
@@ -24,18 +24,32 @@ function TabsCard({ openTabs }) {
 	};
 
 	const setColorPalette = (element) => {
-		const color = element.target.id;
-		chrome.storage.local.get('openTabs', ({ openTabs }) => {
-			openTabs.color = color;
-			chrome.storage.local.set({ openTabs: openTabs });
+		// const color = element.target.id;
+		// chrome.storage.local.get('storage', ({ storage }) => {
+		// 	storage.openTabs.color = color;
+		// 	chrome.storage.local.set({ storage: storage });
+		// });
+	};
+
+	const changeTitle = (el) => {
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.tabGroups = storage.tabGroups.map((group) => {
+				if (tabGroup.id == group.id) group.nameGroup = el.target.innerHTML;
+				return group;
+			});
+			chrome.storage.local.set({ storage: storage });
 		});
 	};
 
 	return (
-		<div className={'tabs-card tabs-card-' + openTabs.color}>
-			<div className={'tabs-card__header tabs-card__header-' + openTabs.color}>
-				<h2 className={'tabs-card__title text-' + openTabs.color}>
-					{openTabs.nameGroup}
+		<div className={'tabs-card tabs-card-' + tabGroup.color}>
+			<div className={'tabs-card__header tabs-card__header-' + tabGroup.color}>
+				<h2
+					className={'tabs-card__title text-' + tabGroup.color}
+					contentEditable="true"
+					onInput={changeTitle}
+				>
+					{tabGroup.nameGroup}
 				</h2>
 				<ChangeColor
 					showPalette={showPalette}
@@ -57,11 +71,10 @@ function TabsCard({ openTabs }) {
 				className={
 					'tabs-card__ul ' + (minimized ? 'tabs-card__ul-minimize' : '')
 				}
-				id="tabs-card"
 			>
-				{openTabs.tabs &&
-					openTabs.tabs.map((tab) => (
-						<Tab tab={tab} color={openTabs.color} openTab={true} />
+				{tabGroup.tabs &&
+					tabGroup.tabs.map((tab) => (
+						<Tab tab={tab} color={tabGroup.color} openTab={false} />
 					))}
 			</ul>
 		</div>

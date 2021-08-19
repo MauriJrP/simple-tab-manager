@@ -7,15 +7,19 @@ import Main from './Main';
 import Footer from './Footer';
 
 function App() {
-	let [openTabs, setOpenTabs] = useState([]);
+	let [storage, setStroage] = useState({});
 
-	chrome.storage.local.get('openTabs', ({ openTabs }) => setOpenTabs(openTabs));
-	// console.log(openTabs);
+	chrome.storage.local.get('storage', ({ storage }) => {
+		setStroage(storage);
+	});
+	// console.log(storage);
 
 	return (
 		<div className="container">
 			<Header />
-			<Main openTabs={openTabs} />
+			{storage.openTabs && storage.tabGroups && (
+				<Main openTabs={storage.openTabs} tabGroups={storage.tabGroups} />
+			)}
 			<Footer />
 		</div>
 	);

@@ -1,16 +1,28 @@
 .header {
-	display: flex;
+	display: grid;
 	justify-content: center;
 	align-items: center;
 	height: 10vh;
 	width: 100%;
 	background: #4a934a;
+	grid-template-columns: 90% 10%;
 }
 
 .header__h1 {
 	font-size: 20px;
 	text-align: center;
 	color: #fff;
-	/* border-bottom: 0.1em solid rgb(232, 229, 222); */
-	/* display: inline-block; */
+}
+
+.header__div-add {
+	max-height: 30px;
+}
+
+.header__img-add {
+	height: 100%;
+	transition: transform 0.2s;
+}
+
+.header__img-add:hover {
+	transform: scale(1.05);
 }
