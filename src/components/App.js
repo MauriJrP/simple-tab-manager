@@ -12,7 +12,6 @@ function App() {
 	chrome.storage.local.get('storage', ({ storage }) => {
 		setStroage(storage);
 	});
-	// console.log(storage);
 
 	return (
 		<div className="container">

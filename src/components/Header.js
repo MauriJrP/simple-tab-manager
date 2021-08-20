@@ -1,7 +1,6 @@
 /*global chrome*/
 import './styles/Header.css';
 import TabGroup from '../TabGroup';
-// import { useState, useEffect } from 'react';
 
 function Header() {
 	const addNewTabGroup = () => {

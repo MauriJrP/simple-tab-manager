@@ -10,7 +10,7 @@ function OpenTabsCard({ openTabs }) {
 	let [minimized, setMinimized] = useState(openTabs.minimized);
 	let [palette, setPalette] = useState(false);
 
-	const minimizeGroup = (/*element*/) => {
+	const minimizeGroup = () => {
 		setMinimized(!minimized);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.openTabs.minimized = !storage.openTabs.minimized;
@@ -31,6 +31,11 @@ function OpenTabsCard({ openTabs }) {
 		});
 	};
 
+	const createNewTab = async () => await chrome.tabs.create({ active: false });
+
+	const createTab = async (url = undefined) =>
+		await chrome.tabs.create({ active: false, url: url });
+
 	const dragging = (el) => el.preventDefault();
 
 	const drop = (el) => {
@@ -45,7 +50,7 @@ function OpenTabsCard({ openTabs }) {
 				(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
 			);
 			storage.tabTransfered.tabGroupId = openTabs.id;
-			storage.openTabs.tabs.push(storage.tabTransfered);
+			createTab(storage.tabTransfered.url);
 			chrome.storage.local.set({ storage: storage });
 		});
 	};
@@ -83,13 +88,17 @@ function OpenTabsCard({ openTabs }) {
 			>
 				{openTabs.tabs &&
 					openTabs.tabs.map((tab) => (
-						<Tab
-							tab={tab}
-							color={openTabs.color}
-							openTab={true}
-							// id={tab.tabStorageId}
-						/>
+						<Tab tab={tab} color={openTabs.color} openTab={true} />
 					))}
+				<li
+					className={'tabs-card__li tab tabs-card__header-' + openTabs.color}
+					title="New Tab"
+					onClick={createNewTab}
+				>
+					<p className={'tab__a tabs-card__title text-' + openTabs.color}>
+						Create New Tab
+					</p>
+				</li>
 			</ul>
 		</div>
 	);

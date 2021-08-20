@@ -3,7 +3,7 @@
 import './styles/Tab.css';
 
 function Tab({ tab, color, openTab }) {
-	const removeTab = async () => {
+	const closeTab = async () => {
 		openTab === true
 			? await chrome.tabs.remove(tab.tabId)
 			: chrome.storage.local.get('storage', ({ storage }) => {
@@ -66,7 +66,7 @@ function Tab({ tab, color, openTab }) {
 			<div
 				className="tabs-card__img-container img-container tab__img-container-close-icon"
 				id={tab.tabId} // id on browser
-				onClick={removeTab}
+				onClick={closeTab}
 			>
 				<img
 					src={process.env.PUBLIC_URL + '/icons/cancel.png'}

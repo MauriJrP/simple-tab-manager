@@ -10,7 +10,7 @@ function TabsCard({ tabGroup }) {
 	let [minimized, setMinimized] = useState(tabGroup.minimized);
 	let [palette, setPalette] = useState(false);
 
-	const minimizeGroup = (/*element*/) => {
+	const minimizeGroup = () => {
 		setMinimized(!minimized);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabGroups = storage.tabGroups.map((group) => {
@@ -21,10 +21,7 @@ function TabsCard({ tabGroup }) {
 		});
 	};
 
-	const showPalette = () => {
-		setPalette(!palette);
-		console.log(palette);
-	};
+	const showPalette = () => setPalette(!palette);
 
 	const setColorPalette = (element) => {
 		const color = element.target.id;
@@ -47,28 +44,32 @@ function TabsCard({ tabGroup }) {
 		});
 	};
 
-	const removeTab = async (id) => await chrome.tabs.remove(id);
+	const closeTab = async (id) => await chrome.tabs.remove(id);
+
+	const removeTab = (storage) => {
+		if (storage.tabTransfered.tabGroupId === 0) {
+			storage.openTabs.tabs = storage.openTabs.tabs.filter(
+				(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
+			);
+			closeTab(storage.tabTransfered.tabId);
+		} else {
+			const removePos = storage.tabGroups.findIndex(
+				(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId
+			);
+			storage.tabGroups[removePos].tabs = storage.tabGroups[
+				removePos
+			].tabs.filter(
+				(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
+			);
+		}
+	};
 
 	const dragging = (el) => el.preventDefault();
 
 	const drop = (el) => {
 		el.preventDefault();
 		chrome.storage.local.get('storage', ({ storage }) => {
-			if (storage.tabTransfered.tabGroupId === 0) {
-				storage.openTabs.tabs = storage.openTabs.tabs.filter(
-					(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
-				);
-				removeTab(storage.tabTransfered.tabId);
-			} else {
-				const removePos = storage.tabGroups.findIndex(
-					(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId
-				);
-				storage.tabGroups[removePos].tabs = storage.tabGroups[
-					removePos
-				].tabs.filter(
-					(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
-				);
-			}
+			removeTab(storage);
 			storage.tabTransfered.tabGroupId = tabGroup.id;
 			storage.tabGroups = storage.tabGroups.map((group) => {
 				if (tabGroup.id === group.id) group.tabs.push(storage.tabTransfered);
@@ -115,12 +116,7 @@ function TabsCard({ tabGroup }) {
 			>
 				{tabGroup.tabs &&
 					tabGroup.tabs.map((tab) => (
-						<Tab
-							tab={tab}
-							color={tabGroup.color}
-							openTab={false}
-							// id={tabStorageId}
-						/>
+						<Tab tab={tab} color={tabGroup.color} openTab={false} />
 					))}
 			</ul>
 		</div>
