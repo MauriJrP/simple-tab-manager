@@ -44,6 +44,7 @@ function OpenTabsCard({ openTabs }) {
 	const drop = (el) => {
 		el.preventDefault();
 		chrome.storage.local.get('storage', ({ storage }) => {
+			if (storage.tabTransfered.tabGroupId === openTabs.id) return;
 			const removePos = storage.tabGroups.findIndex(
 				(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId
 			);

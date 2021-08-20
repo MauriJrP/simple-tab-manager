@@ -54,10 +54,10 @@ function TabsCard({ tabGroup }) {
 
 	const removeTab = (storage) => {
 		if (storage.tabTransfered.tabGroupId === 0) {
-			storage.openTabs.tabs = storage.openTabs.tabs.filter(
-				(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
-			);
-			closeTab(storage.tabTransfered.tabId);
+			storage.openTabs.tabs = storage.openTabs.tabs.filter((tab) => {
+				closeTab(storage.tabTransfered.tabId);
+				return tab.tabStorageId !== storage.tabTransfered.tabStorageId;
+			});
 		} else {
 			const removePos = storage.tabGroups.findIndex(
 				(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId
@@ -75,6 +75,7 @@ function TabsCard({ tabGroup }) {
 	const drop = (el) => {
 		el.preventDefault();
 		chrome.storage.local.get('storage', ({ storage }) => {
+			if (storage.tabTransfered.tabGroupId === tabGroup.id) return;
 			removeTab(storage);
 			storage.tabTransfered.tabGroupId = tabGroup.id;
 			storage.tabGroups = storage.tabGroups.map((group) => {
