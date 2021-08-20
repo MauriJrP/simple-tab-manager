@@ -8,9 +8,15 @@ import { useState } from 'react';
 
 function TabsCard({ tabGroup }) {
 	let [minimized, setMinimized] = useState(tabGroup.minimized);
+	let [hidden, setHidden] = useState(tabGroup.minimized);
 	let [palette, setPalette] = useState(false);
 
 	const minimizeGroup = () => {
+		if (hidden) setHidden(!hidden);
+		else
+			setTimeout(() => {
+				setHidden(!hidden);
+			}, 800);
 		setMinimized(!minimized);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabGroups = storage.tabGroups.map((group) => {
@@ -111,7 +117,9 @@ function TabsCard({ tabGroup }) {
 			</div>
 			<ul
 				className={
-					'tabs-card__ul ' + (minimized ? 'tabs-card__ul-minimize' : '')
+					'tabs-card__ul ' +
+					(minimized ? 'tabs-card__ul-minimize' : '') +
+					(hidden ? ' hidden' : '')
 				}
 			>
 				{tabGroup.tabs &&

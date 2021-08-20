@@ -8,9 +8,15 @@ import { useState } from 'react';
 
 function OpenTabsCard({ openTabs }) {
 	let [minimized, setMinimized] = useState(openTabs.minimized);
+	let [hidden, setHidden] = useState(openTabs.minimized);
 	let [palette, setPalette] = useState(false);
 
 	const minimizeGroup = () => {
+		if (hidden) setHidden(!hidden);
+		else
+			setTimeout(() => {
+				setHidden(!hidden);
+			}, 800);
 		setMinimized(!minimized);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.openTabs.minimized = !storage.openTabs.minimized;
@@ -18,10 +24,7 @@ function OpenTabsCard({ openTabs }) {
 		});
 	};
 
-	const showPalette = () => {
-		setPalette(!palette);
-		console.log(palette);
-	};
+	const showPalette = () => setPalette(!palette);
 
 	const setColorPalette = (element) => {
 		const color = element.target.id;
@@ -83,7 +86,9 @@ function OpenTabsCard({ openTabs }) {
 			</div>
 			<ul
 				className={
-					'tabs-card__ul ' + (minimized ? 'tabs-card__ul-minimize' : '')
+					'tabs-card__ul ' +
+					(minimized ? 'tabs-card__ul-minimize' : '') +
+					(hidden ? ' hidden' : '')
 				}
 			>
 				{openTabs.tabs &&
