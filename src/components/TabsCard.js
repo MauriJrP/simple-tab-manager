@@ -52,7 +52,10 @@ function TabsCard({ tabGroup }) {
 	const changeTitle = (el) => {
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabGroups = storage.tabGroups.map((group) => {
-				if (tabGroup.id === group.id) group.nameGroup = el.target.innerHTML;
+				if (tabGroup.id === group.id)
+					if (el.target.innerText !== '') group.nameGroup = el.target.innerText;
+					else el.target.innerText = group.nameGroup;
+				console.log(el);
 				return group;
 			});
 			chrome.storage.local.set({ storage: storage });
@@ -116,7 +119,7 @@ function TabsCard({ tabGroup }) {
 				<h2
 					className={'tabs-card__title text-' + tabGroup.color}
 					contentEditable="true"
-					onInput={changeTitle}
+					onBlur={changeTitle}
 				>
 					{tabGroup.nameGroup}
 				</h2>
