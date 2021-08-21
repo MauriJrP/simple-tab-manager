@@ -4,17 +4,28 @@ import './styles/Tab.css';
 
 function Tab({ tab, color, openTab }) {
 	const closeTab = async () => {
-		openTab === true
-			? await chrome.tabs.remove(tab.tabId)
-			: chrome.storage.local.get('storage', ({ storage }) => {
-					storage.tabGroups = storage.tabGroups.map((group) => {
-						group.tabs = group.tabs.filter(
-							(t) => t.tabStorageId !== tab.tabStorageId
-						);
-						return group;
-					});
+		if (openTab) {
+			try {
+				await chrome.tabs.remove(tab.tabId);
+			} catch (error) {
+				chrome.storage.local.get('storage', ({ storage }) => {
+					storage.openTabs.tabs = storage.tabGroups.filter(
+						(t) => t.tabStorageId != tab.tabStorageId
+					);
 					chrome.storage.local.set({ storage: storage });
-			  });
+				});
+			}
+		} else {
+			chrome.storage.local.get('storage', ({ storage }) => {
+				storage.tabGroups = storage.tabGroups.map((group) => {
+					group.tabs = group.tabs.filter(
+						(t) => t.tabStorageId !== tab.tabStorageId
+					);
+					return group;
+				});
+				chrome.storage.local.set({ storage: storage });
+			});
+		}
 	};
 
 	const moveToTab = async () =>

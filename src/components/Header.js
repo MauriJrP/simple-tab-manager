@@ -4,9 +4,11 @@ import TabGroup from '../TabGroup';
 
 function Header() {
 	const addNewTabGroup = () => {
+		// console.log(`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`);
 		chrome.storage.local.get('storage', ({ storage }) => {
+			let date = new Date();
 			let newTabGroup = new TabGroup(++storage.tabGroupsCont);
-			newTabGroup.nameGroup = 'New Tab Group';
+			newTabGroup.nameGroup = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 			storage.tabGroups.push(newTabGroup);
 			chrome.storage.local.set({ storage: storage });
 		});
