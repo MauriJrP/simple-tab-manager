@@ -54,10 +54,10 @@ function TabsCard({ tabGroup }) {
 
 	const removeTab = (storage) => {
 		if (storage.tabTransfered.tabGroupId === 0) {
-			storage.openTabs.tabs = storage.openTabs.tabs.filter((tab) => {
-				closeTab(storage.tabTransfered.tabId);
-				return tab.tabStorageId !== storage.tabTransfered.tabStorageId;
-			});
+			storage.openTabs.tabs = storage.openTabs.tabs.filter(
+				(tab) => tab.tabStorageId !== storage.tabTransfered.tabStorageId
+			);
+			closeTab(storage.tabTransfered.tabId);
 		} else {
 			const removePos = storage.tabGroups.findIndex(
 				(tabGroup) => tabGroup.id === storage.tabTransfered.tabGroupId

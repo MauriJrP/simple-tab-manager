@@ -72,7 +72,9 @@ const loadTabs = async () => {
 const tabAdded = async (tab) => {
 	chrome.storage.local.get('storage', ({ storage }) => {
 		const newTab = getTabInfo(tab, ++storage.tabsCont);
+		console.log(newTab);
 		storage.openTabs.tabs.push(newTab);
+		console.log(storage.openTabs.tabs);
 		chrome.storage.local.set({ storage: storage });
 	});
 };
@@ -83,7 +85,10 @@ const tabUpdated = async (tabId, changeInfo, tab) => {
 			const pos = storage.openTabs.tabs.findIndex(
 				(openTab) => openTab.tabId === tabId
 			);
-			storage.openTabs.tabs[pos] = getTabInfo(tab);
+			storage.openTabs.tabs[pos] = getTabInfo(
+				tab,
+				storage.openTabs.tabs[pos].tabStorageId
+			);
 			chrome.storage.local.set({ storage: storage });
 		});
 	}

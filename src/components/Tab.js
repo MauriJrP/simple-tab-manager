@@ -47,7 +47,6 @@ function Tab({ tab, color, openTab }) {
 	);
 
 	const dragElement = (el) => {
-		console.log(el);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabTransfered = tab;
 			chrome.storage.local.set({ storage: storage });
