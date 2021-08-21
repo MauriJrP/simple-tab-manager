@@ -11,6 +11,15 @@ function TabsCard({ tabGroup }) {
 	let [hidden, setHidden] = useState(tabGroup.minimized);
 	let [palette, setPalette] = useState(false);
 
+	const deletGroup = () => {
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.tabGroups = storage.tabGroups.filter(
+				(group) => group.id !== tabGroup.id
+			);
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
+
 	const minimizeGroup = () => {
 		if (hidden) setHidden(!hidden);
 		else
@@ -93,6 +102,17 @@ function TabsCard({ tabGroup }) {
 			onDrop={drop}
 		>
 			<div className={'tabs-card__header tabs-card__header-' + tabGroup.color}>
+				<div
+					className="img-container tabs-card__img-container"
+					title="Delete Group"
+					onClick={deletGroup}
+				>
+					<img
+						src={process.env.PUBLIC_URL + '/icons/cancel.png'}
+						alt="delete"
+						className="tabs-card__img"
+					/>
+				</div>
 				<h2
 					className={'tabs-card__title text-' + tabGroup.color}
 					contentEditable="true"
