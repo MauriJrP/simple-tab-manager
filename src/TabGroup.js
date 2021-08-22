@@ -21,6 +21,7 @@ class TabGroup {
 			tabGroupId: groupId,
 			tabId: tab.id,
 			title: tab.title,
+			pinned: tab.pinned,
 			url: tab.url,
 			favIconUrl: tab.favIconUrl,
 		};

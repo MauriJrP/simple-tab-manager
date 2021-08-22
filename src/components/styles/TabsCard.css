@@ -72,11 +72,11 @@
 }
 
 .tabs-card__img-container {
-	width: 20px;
+	width: 21px;
 }
 
 .tabs-card__img {
-	max-height: 15px;
+	max-height: 16px;
 	object-fit: contain;
 }
 

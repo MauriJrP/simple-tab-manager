@@ -1,6 +1,7 @@
 /*global chrome*/
 
 import './styles/TabsCard.css';
+import TabGroup from '../TabGroup';
 import Tab from './Tab';
 import ChangeColor from './ChangeColor';
 
@@ -20,6 +21,24 @@ function OpenTabsCard({ openTabs }) {
 		setMinimized(!minimized);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.openTabs.minimized = !storage.openTabs.minimized;
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
+
+	const closeTab = async (id) => await chrome.tabs.remove(id);
+
+	const saveTabsInNewGroup = () => {
+		chrome.storage.local.get('storage', ({ storage }) => {
+			let date = new Date();
+			let newTabGroup = new TabGroup(++storage.tabGroupsCont);
+			newTabGroup.nameGroup = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+			newTabGroup.tabs = storage.openTabs.tabs.filter((tab) => {
+				if (!tab.pinned) {
+					closeTab(tab.tabId);
+					return tab;
+				}
+			});
+			storage.tabGroups.unshift(newTabGroup);
 			chrome.storage.local.set({ storage: storage });
 		});
 	};
@@ -74,6 +93,16 @@ function OpenTabsCard({ openTabs }) {
 					palette={palette}
 					setColorPalette={setColorPalette}
 				/>
+				<div
+					className="img-container tabs-card__img-container"
+					title="Save all in new group"
+					onClick={saveTabsInNewGroup}
+				>
+					<img
+						src={process.env.PUBLIC_URL + '/icons/save.png'}
+						className="tabs-card__img"
+					/>
+				</div>
 				<div
 					className="img-container tabs-card__img-container"
 					title="Minimize"

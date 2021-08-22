@@ -23,6 +23,7 @@ class TabGroup {
 			tabGroupId: groupId,
 			tabId: tab.id,
 			title: tab.title,
+			pinned: tab.pinned,
 			url: tab.url,
 			favIconUrl: tab.favIconUrl,
 		};
@@ -39,6 +40,7 @@ const getTabInfo = (tab, id, groupId = 0) => {
 		tabGroupId: groupId,
 		tabId: tab.id,
 		title: tab.title,
+		pinned: tab.pinned,
 		url: tab.url,
 		favIconUrl: tab.favIconUrl,
 	};
@@ -57,6 +59,7 @@ const loadTabGroups = async () => {
 
 const loadTabs = async () => {
 	const tabs = await getAllInWindow();
+	console.log(tabs);
 
 	chrome.storage.local.get('storage', ({ storage }) => {
 		let openTabs = new TabGroup();

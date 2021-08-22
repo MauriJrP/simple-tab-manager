@@ -9,8 +9,8 @@ function Tab({ tab, color, openTab }) {
 				await chrome.tabs.remove(tab.tabId);
 			} catch (error) {
 				chrome.storage.local.get('storage', ({ storage }) => {
-					storage.openTabs.tabs = storage.tabGroups.filter(
-						(t) => t.tabStorageId != tab.tabStorageId
+					storage.openTabs.tabs = storage.openTabs.tabs.filter(
+						(t) => t.tabStorageId !== tab.tabStorageId
 					);
 					chrome.storage.local.set({ storage: storage });
 				});
