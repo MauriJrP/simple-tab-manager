@@ -7,7 +7,9 @@ function Main({ openTabs, tabGroups }) {
 		<main className="main">
 			<OpenTabsCard openTabs={openTabs} />
 			{tabGroups &&
-				tabGroups.map((tabGroup) => <TabsCard tabGroup={tabGroup} />)}
+				tabGroups.map((tabGroup) => {
+					return <TabsCard tabGroup={tabGroup} />;
+				})}
 		</main>
 	);
 }

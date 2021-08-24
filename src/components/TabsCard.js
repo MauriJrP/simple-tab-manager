@@ -103,8 +103,15 @@ function TabsCard({ tabGroup }) {
 			className={'tabs-card tabs-card-' + tabGroup.color}
 			onDragOver={dragging}
 			onDrop={drop}
+			style={{ gridRow: 'span ' + tabGroup.tabs.length }}
 		>
-			<div className={'tabs-card__header tabs-card__header-' + tabGroup.color}>
+			<div
+				className={
+					'tabs-card__header tabs-card__header-' +
+					tabGroup.color +
+					(minimized ? ' tabs-card__header-minimize' : '')
+				}
+			>
 				<div
 					className="img-container tabs-card__img-container"
 					title="Delete Group"

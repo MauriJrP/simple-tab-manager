@@ -8,22 +8,20 @@ import ChangeColor from './ChangeColor';
 import { useState } from 'react';
 
 function OpenTabsCard({ openTabs }) {
-	let [minimized, setMinimized] = useState(openTabs.minimized);
-	let [hidden, setHidden] = useState(openTabs.minimized);
 	let [palette, setPalette] = useState(false);
 
-	const minimizeGroup = () => {
-		if (hidden) setHidden(!hidden);
-		else
-			setTimeout(() => {
-				setHidden(!hidden);
-			}, 800);
-		setMinimized(!minimized);
-		chrome.storage.local.get('storage', ({ storage }) => {
-			storage.openTabs.minimized = !storage.openTabs.minimized;
-			chrome.storage.local.set({ storage: storage });
-		});
-	};
+	// const minimizeGroup = () => {
+	// 	if (hidden) setHidden(!hidden);
+	// 	else
+	// 		setTimeout(() => {
+	// 			setHidden(!hidden);
+	// 		}, 800);
+	// 	setMinimized(!minimized);
+	// 	chrome.storage.local.get('storage', ({ storage }) => {
+	// 		storage.openTabs.minimized = !storage.openTabs.minimized;
+	// 		chrome.storage.local.set({ storage: storage });
+	// 	});
+	// };
 
 	const closeTab = async (id) => await chrome.tabs.remove(id);
 
@@ -83,6 +81,7 @@ function OpenTabsCard({ openTabs }) {
 			className={'tabs-card tabs-card-' + openTabs.color}
 			onDragOver={dragging}
 			onDrop={drop}
+			style={{ gridRow: 'span ' + openTabs.tabs.length }}
 		>
 			<div className={'tabs-card__header tabs-card__header-' + openTabs.color}>
 				<h2 className={'tabs-card__title text-' + openTabs.color}>
@@ -103,24 +102,8 @@ function OpenTabsCard({ openTabs }) {
 						className="tabs-card__img"
 					/>
 				</div>
-				<div
-					className="img-container tabs-card__img-container"
-					title="Minimize"
-					onClick={minimizeGroup}
-				>
-					<img
-						src={process.env.PUBLIC_URL + '/icons/minimize.png'}
-						className="tabs-card__img"
-					/>
-				</div>
 			</div>
-			<ul
-				className={
-					'tabs-card__ul ' +
-					(minimized ? 'tabs-card__ul-minimize' : '') +
-					(hidden ? ' hidden' : '')
-				}
-			>
+			<ul className="tabs-card__ul">
 				{openTabs.tabs &&
 					openTabs.tabs.map((tab) => (
 						<Tab tab={tab} color={openTabs.color} openTab={true} />
