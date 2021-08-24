@@ -20,16 +20,13 @@ function TabsCard({ tabGroup }) {
 		});
 	};
 
-	const minimizeGroup = () => {
-		if (hidden) setHidden(!hidden);
-		else
-			setTimeout(() => {
-				setHidden(!hidden);
-			}, 800);
-		setMinimized(!minimized);
+	const changeTitle = (el) => {
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabGroups = storage.tabGroups.map((group) => {
-				if (tabGroup.id === group.id) group.minimized = !group.minimized;
+				if (tabGroup.id === group.id)
+					if (el.target.innerText !== '') group.nameGroup = el.target.innerText;
+					else el.target.innerText = group.nameGroup;
+				console.log(el);
 				return group;
 			});
 			chrome.storage.local.set({ storage: storage });
@@ -49,13 +46,32 @@ function TabsCard({ tabGroup }) {
 		});
 	};
 
-	const changeTitle = (el) => {
+	const createTab = async ({ url = undefined }) =>
+		await chrome.tabs.create({ active: false, url: url });
+
+	const restoreTabs = () => {
+		if (tabGroup.pinned) tabGroup.tabs.map(createTab);
+		else {
+			chrome.storage.local.get('storage', ({ storage }) => {
+				tabGroup.tabs.map(createTab);
+				storage.tabGroups = storage.tabGroups.filter(
+					(group) => group.id !== tabGroup.id
+				);
+				chrome.storage.local.set({ storage: storage });
+			});
+		}
+	};
+
+	const minimizeGroup = () => {
+		if (hidden) setHidden(!hidden);
+		else
+			setTimeout(() => {
+				setHidden(!hidden);
+			}, 800);
+		setMinimized(!minimized);
 		chrome.storage.local.get('storage', ({ storage }) => {
 			storage.tabGroups = storage.tabGroups.map((group) => {
-				if (tabGroup.id === group.id)
-					if (el.target.innerText !== '') group.nameGroup = el.target.innerText;
-					else el.target.innerText = group.nameGroup;
-				console.log(el);
+				if (tabGroup.id === group.id) group.minimized = !group.minimized;
 				return group;
 			});
 			chrome.storage.local.set({ storage: storage });
@@ -109,7 +125,9 @@ function TabsCard({ tabGroup }) {
 				className={
 					'tabs-card__header tabs-card__header-' +
 					tabGroup.color +
-					(minimized ? ' tabs-card__header-minimize' : '')
+					(minimized || tabGroup.tabs.length === 0
+						? ' tabs-card__header-minimize'
+						: '')
 				}
 			>
 				<div
@@ -135,6 +153,16 @@ function TabsCard({ tabGroup }) {
 					palette={palette}
 					setColorPalette={setColorPalette}
 				/>
+				<div
+					className="img-container tabs-card__img-container"
+					title="Restore tabs"
+					onClick={restoreTabs}
+				>
+					<img
+						src={process.env.PUBLIC_URL + '/icons/restore.png'}
+						className="tabs-card__img"
+					/>
+				</div>
 				<div
 					className="img-container tabs-card__img-container"
 					title="Minimize"
