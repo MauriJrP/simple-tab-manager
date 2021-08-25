@@ -48,12 +48,12 @@ function Tab({ tab, color, openTab }) {
 	const link = openTab ? (
 		<div className={'tab__a text-' + color} onClick={moveToTab}>
 			{linkInfo}
-			{tab.title.substring(0, 20)}
+			<p className="tab__p">{tab.title}</p>
 		</div>
 	) : (
 		<a href={tab.url} target="_blank" className={'tab__a text-' + color}>
 			{linkInfo}
-			{tab.title.substring(0, 20)}
+			<p className="tab__p">{tab.title}</p>
 		</a>
 	);
 

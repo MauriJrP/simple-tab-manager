@@ -10,20 +10,25 @@ import { useState } from 'react';
 function OpenTabsCard({ openTabs }) {
 	let [palette, setPalette] = useState(false);
 
-	// const minimizeGroup = () => {
-	// 	if (hidden) setHidden(!hidden);
-	// 	else
-	// 		setTimeout(() => {
-	// 			setHidden(!hidden);
-	// 		}, 800);
-	// 	setMinimized(!minimized);
-	// 	chrome.storage.local.get('storage', ({ storage }) => {
-	// 		storage.openTabs.minimized = !storage.openTabs.minimized;
-	// 		chrome.storage.local.set({ storage: storage });
-	// 	});
-	// };
-
 	const closeTab = async (id) => await chrome.tabs.remove(id);
+
+	const getAllInWindow = async () => {
+		let queryOptions = { windowId: -2 }; // -2 = windows.WINDOW_ID_CURRENT
+		let tabs = await chrome.tabs.query(queryOptions);
+		return tabs;
+	};
+
+	const reloadTabs = async () => {
+		const tabs = await getAllInWindow();
+		const myTabGroup = new TabGroup();
+
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.openTabs.tabs = tabs.map((tab) =>
+				myTabGroup.getTabInfo(tab, ++storage.tabsCont)
+			);
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
 
 	const saveTabsInNewGroup = () => {
 		chrome.storage.local.get('storage', ({ storage }) => {
@@ -84,6 +89,16 @@ function OpenTabsCard({ openTabs }) {
 			style={{ gridRow: 'span ' + openTabs.tabs.length }}
 		>
 			<div className={'tabs-card__header tabs-card__header-' + openTabs.color}>
+				<div
+					className="img-container tabs-card__img-container"
+					title="Reload"
+					onClick={reloadTabs}
+				>
+					<img
+						src={process.env.PUBLIC_URL + '/icons/reload.png'}
+						className="tabs-card__img"
+					/>
+				</div>
 				<h2 className={'tabs-card__title text-' + openTabs.color}>
 					{openTabs.nameGroup}
 				</h2>
@@ -113,7 +128,11 @@ function OpenTabsCard({ openTabs }) {
 					title="New Tab"
 					onClick={createNewTab}
 				>
-					<p className={'tab__a tabs-card__title text-' + openTabs.color}>
+					<p
+						className={
+							'tab__a tabs-card__new tabs-card__title text-' + openTabs.color
+						}
+					>
 						Create New Tab
 					</p>
 				</li>

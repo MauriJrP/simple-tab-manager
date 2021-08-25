@@ -18,6 +18,14 @@
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	width: 31vw;
+}
+
+.tab__p {
+	/* max-width: 26vw; */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .tab__img-container-fav-icon {
