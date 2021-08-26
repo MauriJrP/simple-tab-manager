@@ -30,13 +30,18 @@ function OpenTabsCard({ openTabs }) {
 		});
 	};
 
-	const saveTabsInNewGroup = () => {
+	const saveTabsInNewGroup = async () => {
+		await createNewTab();
 		chrome.storage.local.get('storage', ({ storage }) => {
 			let date = new Date();
 			let newTabGroup = new TabGroup(++storage.tabGroupsCont);
 			newTabGroup.nameGroup = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 			newTabGroup.tabs = storage.openTabs.tabs.filter((tab) => {
-				if (!tab.pinned) {
+				if (
+					!tab.pinned &&
+					tab.url !== '' &&
+					!(tab.url.search('//newtab') !== -1)
+				) {
 					closeTab(tab.tabId);
 					return tab;
 				}

@@ -8,7 +8,21 @@
 	},
 	"permissions": ["storage", "tabs", "tabGroups"],
 	"action": {
-		"default_popup": "index.html"
+		"default_popup": "index.html",
+		"default_icon": {
+      "16": "/icons/logo_16.png",
+      "32": "/icons/logo_32.png",
+      "48": "/icons/logo_48.png",
+      "128": "/icons/logo_128.png"
+		}
 	},
-	"options_page": "options/options.html"
+	"options_page": "options/options.html",
+	"commands": {
+		"_execute_action": {
+			"suggested_key": {
+				"default": "Alt+S"
+			},
+			"description": "Open popup"
+		}
+	}
 }

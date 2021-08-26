@@ -123,3 +123,20 @@ chrome.runtime.onStartup.addListener(loadTabs);
 chrome.tabs.onCreated.addListener(tabAdded);
 chrome.tabs.onUpdated.addListener(tabUpdated);
 chrome.tabs.onRemoved.addListener(tabRemoved);
+
+// chrome.commands.onCommand.addListener(async (command) => {
+// 	console.log(`Command: ${command}`);
+// });
+
+// chrome.action.onClicked.addListener((tab) => {
+// 	chrome.scripting.executeScript({
+// 		target: { tabId: tab.id },
+// 		func: contentScriptFunc,
+// 		args: ['action'],
+// 	});
+// });
+
+// function contentScriptFunc(name) {
+// 	alert(`"${name}" executed`);
+// 	console.log('hoa');
+// }

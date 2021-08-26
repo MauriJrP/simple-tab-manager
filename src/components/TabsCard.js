@@ -1,6 +1,7 @@
 /*global chrome*/
 
 import './styles/TabsCard.css';
+import TabGroup from '../TabGroup';
 import Tab from './Tab';
 import ChangeColor from './ChangeColor';
 
@@ -49,7 +50,25 @@ function TabsCard({ tabGroup }) {
 	const createTab = async ({ url = undefined }) =>
 		await chrome.tabs.create({ active: false, url: url });
 
-	const restoreTabs = () => {
+	const getAllInWindow = async () => {
+		let queryOptions = { windowId: -2 }; // -2 = windows.WINDOW_ID_CURRENT
+		let tabs = await chrome.tabs.query(queryOptions);
+		return tabs;
+	};
+
+	const reloadTabs = async () => {
+		const tabs = await getAllInWindow();
+		const myTabGroup = new TabGroup();
+
+		chrome.storage.local.get('storage', ({ storage }) => {
+			storage.openTabs.tabs = tabs.map((tab) =>
+				myTabGroup.getTabInfo(tab, ++storage.tabsCont)
+			);
+			chrome.storage.local.set({ storage: storage });
+		});
+	};
+
+	const restoreTabs = async () => {
 		if (tabGroup.pinned) tabGroup.tabs.map(createTab);
 		else {
 			chrome.storage.local.get('storage', ({ storage }) => {
@@ -59,6 +78,7 @@ function TabsCard({ tabGroup }) {
 				);
 				chrome.storage.local.set({ storage: storage });
 			});
+			setTimeout(reloadTabs, 5000);
 		}
 	};
 
