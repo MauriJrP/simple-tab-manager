@@ -1,6 +1,7 @@
 .main {
 	max-width: 90%;
-	height: 75vh;
+	/* height: 79vh; */
+	height: 88vh;
 	margin: 4vh auto 2vh;
 	overflow-y: auto;
 	display: grid;

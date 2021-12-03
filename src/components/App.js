@@ -19,7 +19,7 @@ function App() {
 			{storage.openTabs && storage.tabGroups && (
 				<Main openTabs={storage.openTabs} tabGroups={storage.tabGroups} />
 			)}
-			<Footer />
+			{/* <Footer /> */}
 		</div>
 	);
 }

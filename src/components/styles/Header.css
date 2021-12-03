@@ -2,10 +2,11 @@
 	display: grid;
 	justify-content: center;
 	align-items: center;
-	height: 10vh;
+	height: 8vh;
 	width: 100%;
-	background: #4a934a;
+	background: #4a9420;
 	grid-template-columns: 90% 10%;
+	border-bottom: 6px solid #207720;
 }
 
 .header__h1 {
