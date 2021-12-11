@@ -10,9 +10,12 @@
 }
 
 .header__h1 {
-	font-size: 20px;
+	font-size: 3em;
 	text-align: center;
-	color: #fff;
+	/* color: #fff; */
+	font-family: 'Permanent Marker', cursive;
+	line-height: 0;
+	/* font-weight: bold; */
 }
 
 .header__div-add {

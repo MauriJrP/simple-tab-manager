@@ -6,10 +6,12 @@ function Main({ openTabs, tabGroups }) {
 	return (
 		<main className="main">
 			<OpenTabsCard openTabs={openTabs} />
-			{tabGroups &&
-				tabGroups.map((tabGroup) => {
-					return <TabsCard tabGroup={tabGroup} />;
-				})}
+			<div className="main__groups">
+				{tabGroups &&
+					tabGroups.map((tabGroup) => {
+						return <TabsCard tabGroup={tabGroup} />;
+					})}
+			</div>
 		</main>
 	);
 }

@@ -53,6 +53,7 @@ const loadTabGroups = async () => {
 		tabsCont: 0,
 		tabTransfered: undefined,
 	};
+	console.log(storage);
 	chrome.storage.local.set({ storage: storage });
 	await loadTabs();
 };
@@ -63,7 +64,7 @@ const loadTabs = async () => {
 
 	chrome.storage.local.get('storage', ({ storage }) => {
 		let openTabs = new TabGroup();
-		openTabs.nameGroup = 'Open Tabs';
+		openTabs.nameGroup = 'Open';
 		tabs.map((tab) => {
 			openTabs.pushTab(openTabs.getTabInfo(tab, ++storage.tabsCont));
 		});
@@ -75,9 +76,9 @@ const loadTabs = async () => {
 const tabAdded = async (tab) => {
 	chrome.storage.local.get('storage', ({ storage }) => {
 		const newTab = getTabInfo(tab, ++storage.tabsCont);
-		console.log(newTab);
+		// console.log(newTab);
 		storage.openTabs.tabs.push(newTab);
-		console.log(storage.openTabs.tabs);
+		// console.log(storage.openTabs.tabs);
 		chrome.storage.local.set({ storage: storage });
 	});
 };

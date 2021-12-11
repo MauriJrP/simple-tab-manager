@@ -66,7 +66,7 @@ function Tab({ tab, color, openTab }) {
 
 	return (
 		<li
-			className={'tabs-card__li tab tab-' + color}
+			className={'tabs-card__li tab ' + (openTab ? 'open-tab' : 'tab-' + color)}
 			title={tab.title}
 			draggable="true"
 			id={tab.tabStorageId}

@@ -1,7 +1,11 @@
 .main {
+	height: 92vh;
+	overflow: hidden;
+}
+.main__groups {
 	max-width: 90%;
-	/* height: 79vh; */
-	height: 88vh;
+	/* height: ; */
+	max-height: 46vh;
 	margin: 4vh auto 2vh;
 	overflow-y: auto;
 	display: grid;
@@ -12,23 +16,23 @@
 	/* display: inline; */
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
-.main::-webkit-scrollbar {
+.main__groups::-webkit-scrollbar {
 	/* display: none; */
 	width: 10px;
 }
-.main::-webkit-scrollbar-button {
+.main__groups::-webkit-scrollbar-button {
 	display: none;
 }
-.main::-webkit-scrollbar-track {
+.main__groups::-webkit-scrollbar-track {
 	border-radius: 6px;
 	background: var(--header-color-basic);
 }
-.main::-webkit-scrollbar-thumb {
+.main__groups::-webkit-scrollbar-thumb {
 	border-radius: 6px;
 	background: var(--tabs-card-color-basic);
 }
 /* Hide scrollbar for IE, Edge and Firefox */
-.main {
+.main__groups {
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }

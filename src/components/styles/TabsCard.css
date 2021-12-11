@@ -81,10 +81,16 @@
 .tabs-card__img {
 	max-height: 16px;
 	object-fit: contain;
+	transition: transform 0.1s;
+}
+
+.tabs-card__img:hover {
+	transform: scale(1.1);
 }
 
 .tabs-card__new {
 	width: auto;
+	justify-content: center;
 }
 
 /* -------- ------- ------ ----- colors palette ----- ------ ------- -------- */
@@ -102,6 +108,7 @@
 }
 .tab-basic {
 	background-color: var(--tab-color-basic);
+	/* background: repeating-linear-gradient(45deg, black, transparent 132px); */
 }
 
 /* -------- ------- ------ ----- pink ----- ------ ------- -------- */

@@ -1,6 +1,7 @@
 /*global chrome*/
 
 import './styles/TabsCard.css';
+import './styles/OpenTabsCard.css';
 import TabGroup from '../TabGroup';
 import Tab from './Tab';
 import ChangeColor from './ChangeColor';
@@ -88,48 +89,59 @@ function OpenTabsCard({ openTabs }) {
 
 	return (
 		<div
-			className={'tabs-card tabs-card-' + openTabs.color}
+			className={'open-tabs'}
 			onDragOver={dragging}
 			onDrop={drop}
 			style={{ gridRow: 'span ' + openTabs.tabs.length }}
 		>
-			<div className={'tabs-card__header tabs-card__header-' + openTabs.color}>
+			<div
+				className={
+					'open-tabs-header tabs-card__header tabs-card__header-' +
+					openTabs.color
+				}
+			>
+				<h2
+					className={
+						'tabs-card__title open-tabs-card__title text-' + openTabs.color
+					}
+				>
+					{openTabs.nameGroup}
+				</h2>
 				<div
-					className="img-container tabs-card__img-container"
+					className="img-container open-tabs-card__img-container"
 					title="Reload"
 					onClick={reloadTabs}
 				>
 					<img
 						src={process.env.PUBLIC_URL + '/icons/reload.png'}
-						className="tabs-card__img"
+						className="open-tabs-card__img"
 					/>
 				</div>
-				<h2 className={'tabs-card__title text-' + openTabs.color}>
-					{openTabs.nameGroup}
-				</h2>
-				<ChangeColor
+				{/* <ChangeColor
 					showPalette={showPalette}
 					palette={palette}
 					setColorPalette={setColorPalette}
-				/>
+				/> */}
 				<div
-					className="img-container tabs-card__img-container"
+					className="img-container open-tabs-card__img-container"
 					title="Save all in new group"
 					onClick={saveTabsInNewGroup}
 				>
 					<img
 						src={process.env.PUBLIC_URL + '/icons/save.png'}
-						className="tabs-card__img"
+						className="open-tabs-card__img"
 					/>
 				</div>
 			</div>
-			<ul className="tabs-card__ul">
-				{openTabs.tabs &&
-					openTabs.tabs.map((tab) => (
-						<Tab tab={tab} color={openTabs.color} openTab={true} />
-					))}
-				<li
-					className={'tabs-card__li tab tabs-card__header-' + openTabs.color}
+			<div className="open-tabs__container">
+				<ul className="open-tabs-card__ul tabs-card__ul">
+					{openTabs.tabs &&
+						openTabs.tabs.map((tab) => (
+							<Tab tab={tab} color={openTabs.color} openTab={true} />
+						))}
+				</ul>
+				<div
+					className={'tabs-card__li open-tabs-new'}
 					title="New Tab"
 					onClick={createNewTab}
 				>
@@ -140,8 +152,8 @@ function OpenTabsCard({ openTabs }) {
 					>
 						Create New Tab
 					</p>
-				</li>
-			</ul>
+				</div>
+			</div>
 		</div>
 	);
 }
