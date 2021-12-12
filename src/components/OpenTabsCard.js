@@ -87,6 +87,11 @@ function OpenTabsCard({ openTabs }) {
 		});
 	};
 
+	window.onload = () => {
+		// reload open tabs when page is loaded
+		reloadTabs();
+	};
+
 	return (
 		<div
 			className={'open-tabs'}

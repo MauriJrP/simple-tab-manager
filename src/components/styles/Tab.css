@@ -19,6 +19,7 @@
 	align-items: center;
 	cursor: pointer;
 	width: 31vw;
+	user-select: none;
 }
 
 .tab__p {
