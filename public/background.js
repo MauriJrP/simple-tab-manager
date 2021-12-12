@@ -89,11 +89,16 @@ const tabUpdated = async (tabId, changeInfo, tab) => {
 			const pos = storage.openTabs.tabs.findIndex(
 				(openTab) => openTab.tabId === tabId
 			);
-			storage.openTabs.tabs[pos] = getTabInfo(
-				tab,
-				storage.openTabs.tabs[pos].tabStorageId
-			);
-			chrome.storage.local.set({ storage: storage });
+			try {
+				// if tab is in openTabs
+				storage.openTabs.tabs[pos] = getTabInfo(
+					tab,
+					storage.openTabs.tabs[pos].tabStorageId
+				);
+				chrome.storage.local.set({ storage: storage });
+			} catch (error) {
+				console.error(error);
+			}
 		});
 	}
 };
@@ -127,6 +132,7 @@ chrome.tabs.onRemoved.addListener(tabRemoved);
 
 // chrome.commands.onCommand.addListener(async (command) => {
 // 	console.log(`Command: ${command}`);
+// 	console.err('test');
 // });
 
 // chrome.action.onClicked.addListener((tab) => {
