@@ -16,7 +16,7 @@ function Header() {
 	return (
 		<>
 			<header className="header">
-				<h1 className="header__h1">Tab Manager</h1>
+				<h1 className="header__h1">Simple Tab Manager</h1>
 				<div className="header__div-add img-container">
 					<img
 						src={process.env.PUBLIC_URL + '/icons/add.png'}

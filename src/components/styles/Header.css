@@ -10,11 +10,12 @@
 }
 
 .header__h1 {
-	font-size: 3em;
+	font-size: 43px;
 	text-align: center;
 	/* color: #fff; */
-	font-family: 'Permanent Marker', cursive;
+	/* font-family: 'Lilita One', cursive; */
 	line-height: 0;
+	font-variant-caps: all-petite-caps;
 	/* font-weight: bold; */
 }
 

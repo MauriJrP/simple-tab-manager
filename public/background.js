@@ -64,7 +64,7 @@ const loadTabs = async () => {
 
 	chrome.storage.local.get('storage', ({ storage }) => {
 		let openTabs = new TabGroup();
-		openTabs.nameGroup = 'Open';
+		openTabs.nameGroup = 'OPEN';
 		tabs.map((tab) => {
 			openTabs.pushTab(openTabs.getTabInfo(tab, ++storage.tabsCont));
 		});
